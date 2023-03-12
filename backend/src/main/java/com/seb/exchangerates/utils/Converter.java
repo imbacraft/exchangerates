@@ -15,7 +15,8 @@ public class Converter {
     LocalDate localDate = LocalDate.parse(dateString);
     ZonedDateTime zonedDateTime = localDate.atStartOfDay(ZoneId.systemDefault());
     GregorianCalendar gregorianCalendar = GregorianCalendar.from(zonedDateTime);
-    XMLGregorianCalendar xmlGregorianCalendarDate;
+
+    XMLGregorianCalendar xmlGregorianCalendarDate = null;
 
     try {
       xmlGregorianCalendarDate =

@@ -15,6 +15,7 @@
 ## Tools used
 
 ## Architecture
+
 This folder structure allows for a clear separation of concerns between the frontend and backend components of the application, making it easier to manage and maintain the codebase. Additionally, this structure is in line with best practices for building Java Spring Boot and Angular web applications.
 
 In this case, the application could have the following architecture:

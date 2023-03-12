@@ -1,12 +1,8 @@
 package com.seb.exchangerates.service;
 
 import com.seb.exchangerates.dto.*;
-import com.seb.exchangerates.model.ExchangeRate;
+import com.seb.exchangerates.model.ExchangeRates;
 import com.seb.exchangerates.utils.Converter;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,9 +15,9 @@ public class ExchangeRateService extends WebServiceGatewaySupport {
   @Value("${soap.endpoint}")
   private String soapEndpoint;
 
-  public List<ExchangeRate> getExchangeRates(LocalDate date) {
+  public void getExchangeRates(String date) {
 
-    List<ExchangeRate> exchangeRateDtos = new ArrayList<>();
+    soapEndpoint = "http://www.lb.lt/WebServices/ExchangeRates/ExchangeRates.asmx";
 
     ExchangeRateRequest request = new ExchangeRateRequest();
     XMLGregorianCalendar xmlDate =
@@ -38,14 +34,8 @@ public class ExchangeRateService extends WebServiceGatewaySupport {
                     new SoapActionCallback(
                         "http://www.lb.lt/WebServices/ExchangeRates/getExchangeRatesByDate"));
 
-    List<TExchangeRate> exchangeRates = response.getExchangeRates().getExchangeRate();
+    ExchangeRates exchangeRates = response.getExchangeRates();
 
-    for (TExchangeRate exchangeRate : exchangeRates) {
-      ExchangeRateDto exchangeRateDto = new ExchangeRateDto();
-      exchangeRateDto.setCurrency(exchangeRate.getCurrency());
-      exchangeRateDto.setRate(BigDecimal.valueOf(exchangeRate.getRate()));
-      exchangeRateDtos.add(exchangeRateDto);
-    }
-    return exchangeRateDtos;
+    System.out.println(exchangeRates);
   }
 }
