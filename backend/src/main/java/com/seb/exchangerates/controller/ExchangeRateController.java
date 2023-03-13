@@ -17,11 +17,12 @@ public class ExchangeRateController {
   @Autowired private ExchangeRateClient exchangeRateClient;
 
   @GetMapping
-  public String getExchangeRates(@RequestParam String date) {
+  public GetExchangeRatesByDateResponse getExchangeRates(@RequestParam String date) {
     ObjectFactory factory = new ObjectFactory();
 
     GetExchangeRatesByDateResponse response = exchangeRateClient.getExchangeRatesByDate(date);
+    factory.createGetExchangeRatesByDate();
 
-    return response.getGetExchangeRatesByDateResult().toString();
+    return response;
   }
 }
