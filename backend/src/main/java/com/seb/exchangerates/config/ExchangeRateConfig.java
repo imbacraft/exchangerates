@@ -1,6 +1,6 @@
 package com.seb.exchangerates.config;
 
-import com.seb.exchangerates.service.ExchangeRateService;
+import com.seb.exchangerates.service.ExchangeRateClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -14,13 +14,15 @@ public class ExchangeRateConfig {
     // this package must match the package in the <generatePackage> specified in
     // pom.xml
     marshaller.setContextPath("com.seb.exchangerates.model");
+    // marshaller.setPackagesToScan("com.seb.exchangerates.model");
     return marshaller;
   }
 
   @Bean
-  public ExchangeRateService setupExchangeRateClient(Jaxb2Marshaller marshaller) {
-    ExchangeRateService client = new ExchangeRateService();
-    client.setDefaultUri("http://localhost:8080/wsdl");
+  public ExchangeRateClient setupExchangeRateClient(Jaxb2Marshaller marshaller) {
+    ExchangeRateClient client = new ExchangeRateClient();
+
+    client.setDefaultUri("http://www.lb.lt/webservices/exchangerates/exchangerates.asmx");
     client.setMarshaller(marshaller);
     client.setUnmarshaller(marshaller);
     return client;
