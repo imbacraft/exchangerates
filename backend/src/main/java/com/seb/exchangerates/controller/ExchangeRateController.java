@@ -1,7 +1,10 @@
 package com.seb.exchangerates.controller;
 
-import com.seb.exchangerates.model.GetExchangeRatesByDateResponse;
-import com.seb.exchangerates.model.ObjectFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.seb.exchangerates.dto.ExchangeRates;
+import com.seb.exchangerates.model.GetExchangeRatesByDateXmlStringResponse;
 import com.seb.exchangerates.service.ExchangeRateClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +20,29 @@ public class ExchangeRateController {
   @Autowired private ExchangeRateClient exchangeRateClient;
 
   @GetMapping
-  public GetExchangeRatesByDateResponse getExchangeRates(@RequestParam String date) {
-    ObjectFactory factory = new ObjectFactory();
+  public GetExchangeRatesByDateXmlStringResponse getExchangeRates(@RequestParam String date) {
 
-    GetExchangeRatesByDateResponse response = exchangeRateClient.getExchangeRatesByDate(date);
-    factory.createGetExchangeRatesByDate();
+    GetExchangeRatesByDateXmlStringResponse response =
+        exchangeRateClient.getExchangeRatesByDate(date);
+
+    XmlMapper xmlMapper = new XmlMapper();
+    String xmlData = response.getGetExchangeRatesByDateXmlStringResult();
+
+    System.out.println(xmlData);
+
+    ExchangeRates rates = null;
+
+    try {
+      rates = xmlMapper.readValue(xmlData, ExchangeRates.class);
+    } catch (JsonMappingException e) {
+      System.out.println("I'm in'");
+      e.printStackTrace();
+    } catch (JsonProcessingException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    // System.out.println(rates);
 
     return response;
   }

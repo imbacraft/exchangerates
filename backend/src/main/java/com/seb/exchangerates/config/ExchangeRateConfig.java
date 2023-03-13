@@ -22,7 +22,6 @@ public class ExchangeRateConfig {
   public ExchangeRateClient setupExchangeRateClient(Jaxb2Marshaller marshaller) {
     ExchangeRateClient client = new ExchangeRateClient();
 
-    // client.setDefaultUri("http://webservices.lb.lt/ExchangeRates/ExchangeRates.asmx");
     client.setMarshaller(marshaller);
     client.setUnmarshaller(marshaller);
     return client;
