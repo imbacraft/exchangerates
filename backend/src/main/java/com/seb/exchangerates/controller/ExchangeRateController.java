@@ -42,7 +42,7 @@ public class ExchangeRateController {
       e.printStackTrace();
     }
 
-    // System.out.println(rates);
+    System.out.println(rates.getItems());
 
     return response;
   }
