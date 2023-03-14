@@ -10,7 +10,9 @@ import com.seb.exchangerates.model.GetExchangeRatesByDateXmlStringResponse;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,6 +100,12 @@ public class ExchangeRateService {
 
       differencesList.add(exchangeRateDifference);
     }
+
+    // Sort list. Biggest rate increased first (descending order)
+    differencesList =
+        differencesList.stream()
+            .sorted(Comparator.comparing(ExchangeRateDifference::getDifference).reversed())
+            .collect(Collectors.toList());
 
     System.out.println(differencesList);
 
