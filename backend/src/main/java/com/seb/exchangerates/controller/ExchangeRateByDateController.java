@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/")
-public class ExchangeRateController {
+public class ExchangeRateByDateController {
 
   @Autowired private ExchangeRateService exchangeRateService;
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  public ExchangeRates getExchangeRates(@RequestParam String date) {
+  public List<ExchangeRateDifference> getExchangeRateDifferences(@RequestParam String date) {
 
     ExchangeRates rates = exchangeRateService.deserializeExchangeRatesByDateResponse(date);
 
@@ -29,6 +29,6 @@ public class ExchangeRateController {
     List<ExchangeRateDifference> differenceList =
         exchangeRateService.getExchangeRateDifferences(rates, previousDayRates);
 
-    return rates;
+    return differenceList;
   }
 }
