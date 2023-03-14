@@ -1,10 +1,20 @@
 package com.seb.exchangerates.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.seb.exchangerates.serializer.BigDecimalDeserializer;
+import com.seb.exchangerates.serializer.BigDecimalSerializer;
+import com.seb.exchangerates.serializer.LocalDateDeserializer;
+import com.seb.exchangerates.serializer.LocalDateSerializer;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
+import lombok.Data;
 
+@Data
 @JacksonXmlRootElement(localName = "ExchangeRates")
 public class ExchangeRates {
 
@@ -12,80 +22,26 @@ public class ExchangeRates {
   @JacksonXmlElementWrapper(useWrapping = false)
   private List<Item> items;
 
-  public List<Item> getItems() {
-    return items;
-  }
-
-  public void setItems(List<Item> items) {
-    this.items = items;
-  }
-
+  @Data
   public static class Item {
 
-    private String date;
-    private String currency;
-    private String quantity;
-    private String rate;
-    private String unit;
-
-    public String getDate() {
-      return date;
-    }
-
     @JacksonXmlProperty(localName = "date")
-    public void setDate(String date) {
-      this.date = date;
-    }
-
-    public String getCurrency() {
-      return currency;
-    }
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate date;
 
     @JacksonXmlProperty(localName = "currency")
-    public void setCurrency(String currency) {
-      this.currency = currency;
-    }
-
-    public String getQuantity() {
-      return quantity;
-    }
+    private String currency;
 
     @JacksonXmlProperty(localName = "quantity")
-    public void setQuantity(String quantity) {
-      this.quantity = quantity;
-    }
-
-    public String getRate() {
-      return rate;
-    }
+    private String quantity;
 
     @JacksonXmlProperty(localName = "rate")
-    public void setRate(String rate) {
-      this.rate = rate;
-    }
-
-    public String getUnit() {
-      return unit;
-    }
+    @JsonDeserialize(using = BigDecimalDeserializer.class)
+    @JsonSerialize(using = BigDecimalSerializer.class)
+    private BigDecimal rate;
 
     @JacksonXmlProperty(localName = "unit")
-    public void setUnit(String unit) {
-      this.unit = unit;
-    }
-
-    @Override
-    public String toString() {
-      return "Item [date="
-          + date
-          + ", currency="
-          + currency
-          + ", quantity="
-          + quantity
-          + ", rate="
-          + rate
-          + ", unit="
-          + unit
-          + "]";
-    }
+    private String unit;
   }
 }

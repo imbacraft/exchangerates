@@ -1,12 +1,9 @@
 package com.seb.exchangerates.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.seb.exchangerates.dto.ExchangeRates;
-import com.seb.exchangerates.model.GetExchangeRatesByDateXmlStringResponse;
-import com.seb.exchangerates.service.ExchangeRateClient;
+import com.seb.exchangerates.service.ExchangeRateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,33 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class ExchangeRateController {
 
-  @Autowired private ExchangeRateClient exchangeRateClient;
+  @Autowired private ExchangeRateService exchangeRateService;
 
-  @GetMapping
-  public GetExchangeRatesByDateXmlStringResponse getExchangeRates(@RequestParam String date) {
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  public ExchangeRates getExchangeRates(@RequestParam String date) {
 
-    GetExchangeRatesByDateXmlStringResponse response =
-        exchangeRateClient.getExchangeRatesByDate(date);
+    ExchangeRates rates = exchangeRateService.deserializeExchangeRatesByDateResponse(date);
 
-    XmlMapper xmlMapper = new XmlMapper();
-    String xmlData = response.getGetExchangeRatesByDateXmlStringResult();
+    ExchangeRates previousDayRates = exchangeRateService.getPreviousDayExchangeRates(rates);
 
-    System.out.println(xmlData);
-
-    ExchangeRates rates = null;
-
-    try {
-      rates = xmlMapper.readValue(xmlData, ExchangeRates.class);
-    } catch (JsonMappingException e) {
-      System.out.println("I'm in'");
-      e.printStackTrace();
-    } catch (JsonProcessingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
-    System.out.println(rates.getItems());
-
-    return response;
+    return rates;
   }
 }
