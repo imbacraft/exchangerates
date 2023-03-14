@@ -1,10 +1,14 @@
-<form (ngSubmit)="onSubmit()">
-    <label for="date">Enter date:</label>
-    <input type="date" name="date" [(ngModel)]="date">
-    <button type="submit">Get Data</button>
+<h1>Welcome!</h1>
+
+<form class="form-inline" (ngSubmit)="onSubmit()">
+    <div class="form-group mx-sm-3 mb-2">
+        <label for="date" class="sr-only">Enter date:</label>
+        <input type="date" class="form-control" name="date" [(ngModel)]="date" max="2014-12-31">
+    </div>
+    <button type="submit" class="btn btn-primary mb-2">Get Data</button>
 </form>
 
-<table>
+<table class="table table-striped" *ngIf="currencyrates != null && currencyrates.length > 0">
     <thead>
         <tr>
             <th>Currency</th>
@@ -17,7 +21,17 @@
         <tr *ngFor="let item of currencyrates">
             <td>{{ item.currency }}</td>
             <td>{{ item.rate }}</td>
-            <td>{{ item.difference }}</td>
+            <td [ngClass]="{'text-success': item.difference > 0, 'text-danger': item.difference < 0}">
+                <span *ngIf="item.difference > 0">
+                    {{ item.difference }} <i class="fa fa-arrow-up text-success"></i>
+                </span>
+                <span *ngIf="item.difference == 0">
+                    No difference
+                </span>
+                <span *ngIf="item.difference < 0">
+                    {{ item.difference }} <i class="fa fa-arrow-down text-danger"></i>
+                </span>
+            </td>
             <td>{{ item.quantity }}</td>
         </tr>
     </tbody>
