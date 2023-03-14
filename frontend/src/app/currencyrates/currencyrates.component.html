@@ -1,0 +1,24 @@
+<form (ngSubmit)="onSubmit()">
+    <label for="date">Enter date:</label>
+    <input type="date" name="date" [(ngModel)]="date">
+    <button type="submit">Get Data</button>
+</form>
+
+<table>
+    <thead>
+        <tr>
+            <th>Currency</th>
+            <th>Rate</th>
+            <th>Difference</th>
+            <th>Quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let item of currencyrates">
+            <td>{{ item.currency }}</td>
+            <td>{{ item.rate }}</td>
+            <td>{{ item.difference }}</td>
+            <td>{{ item.quantity }}</td>
+        </tr>
+    </tbody>
+</table>
