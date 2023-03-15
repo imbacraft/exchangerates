@@ -7,6 +7,8 @@ The user can select a date and get a list of changes for each currency, sorted b
 
 ## Showcase
 
+![showcase](./showcase.png)
+
 ## Requirements
 
 1. Rest-based web application
@@ -93,7 +95,7 @@ The application can be run using either the packaged jar file or the source code
 `./mvnw clean install`
 4. Once the build is successful, navigate to the "target" folder inside the "backend" folder. You should see a file named "exchange-rates-app-1.0.0.jar".
 5. Run the following command to start the application:
-`java -jar exchange-rates-app-0.0.1-SNAPSHOT.jar`
+`java -jar exchange-rates-app-1.0.0.jar`
 6. Spring boot backend should be running at `http://localhost:8080/`.
 7. In a separate terminal or command prompt, navigate to the "frontend" folder of the project.
 8. Run the following command to install the required dependencies:
@@ -109,9 +111,7 @@ The application can be run using either the packaged jar file or the source code
 2. Open the terminal or command prompt and navigate to the "backend" folder of the project.
 3. Run the following command to start the application:
 
-```shell
-./mvnw spring-boot:run
-```
+`./mvnw spring-boot:run`
 
 This will download the required dependencies, compile your code, and start the Spring Boot application at `http://localhost:8080/`.
 4. Once the build is successful, navigate to the "target" folder inside the "backend" folder. You should see a file named "exchange-rates-app-1.0.0.jar".
