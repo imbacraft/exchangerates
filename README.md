@@ -3,6 +3,9 @@
 ## Introduction
 
 This is a Spring Boot application, which can display a table of the exchange rates of Litas (LTL) compared to other currencies for a specified date between 29/06/1993 and 31/12/2014.
+The user can select a date and get a list of changes for each currency, sorted by the biggest exchange rate increase first.
+
+## Showcase
 
 ## Requirements
 
@@ -24,81 +27,97 @@ This is a Spring Boot application, which can display a table of the exchange rat
 
 ## Architecture
 
+The application follows a folder structure that allows for a clear separation of concerns between the frontend and backend components of the application, making it easier to manage and maintain the codebase.
+
 ### Backend: Java Spring Boot
 
-Java Spring Boot will be used to:
+The Java Spring Boot application provides a RESTful API to the frontend.
+It consumes the SOAP web service to get the exchange rates and performs the processing to calculate the exchange rate differences and sort them by descending order.
 
-1. Build a RESTful API to provide data to the frontend.
-2. Consume the SOAP web service to get the exchange rates and transform the response into a format that can be consumed by the frontend.
-3. Perform the processing to calculate the exchange rate differences and sort them by descending order.
+The folder structure for the backend component is organized as follows:
+
+```
+Exchangerates
+└── backend
+    └── src
+        ├── main
+        │   ├── java
+        │   │   └── com
+        │   │       └── seb
+        │   │           └── exchangerates
+        │   │               ├── client
+        │   │               ├── config
+        │   │               ├── constants
+        │   │               ├── controller
+        │   │               ├── dto
+        │   │               ├── model
+        │   │               ├── serializer
+        │   │               ├── service
+        │   │               └── utils
+        │   └── resources
+        │       ├── static
+        │       ├── templates
+        │       └── wsdl
+        └── test
+            └── java
+                └── com
+                    └── seb
+                        └── exchangerates
+```
 
 ### Frontend: Angular
 
 Angular will be used to create a single-page application (SPA) to provide a user interface for the application.
 
-### Folder structure
+The folder structure for the frontend component is organized as follows:
 
 ```
 Exchangerates
-├── backend
-│   └── src
-│       ├── main
-│       │   ├── java
-│       │   │   └── com
-│       │   │       └── seb
-│       │   │           └── exchangerates
-│       │   │               ├── client
-│       │   │               ├── config
-│       │   │               ├── constants
-│       │   │               ├── controller
-│       │   │               ├── dto
-│       │   │               ├── model
-│       │   │               ├── serializer
-│       │   │               ├── service
-│       │   │               └── utils
-│       │   └── resources
-│       │       ├── static
-│       │       ├── templates
-│       │       └── wsdl
-│       └── test
-│           └── java
-│               └── com
-│                   └── seb
-│                       └── exchangerates
 └── frontend
     └── src
         ├── app
-        │   └── currencyrates
+        │   └── currencyrates
         └── assets
 ```
 
-The folder structure allows for a clear separation of concerns between the frontend and backend components of the application, making it easier to manage and maintain the codebase.
+## Run the application
 
-## How to run the application using the jar file
+The application can be run using either the packaged jar file or the source code.
+
+### How to run the application using packaged jar file
 
 1. Download or clone the repository to your local machine using the following command:
 `git clone https://github.com/imbacraft/exchangerates`
 2. Open the terminal or command prompt and navigate to the "backend" folder of the project.
 3. Run the following command to build the application:
-`mvn clean install`
+`./mvnw clean install`
 4. Once the build is successful, navigate to the "target" folder inside the "backend" folder. You should see a file named "exchange-rates-app-1.0.0.jar".
 5. Run the following command to start the application:
 `java -jar exchange-rates-app-0.0.1-SNAPSHOT.jar`
+6. Spring boot backend should be running at `http://localhost:8080/`.
+7. In a separate terminal or command prompt, navigate to the "frontend" folder of the project.
+8. Run the following command to install the required dependencies:
+`npm install`
+9. Once the installation is complete, run the following command to start the Angular development server:
+`ng serve`
+10. Open your web browser and go to `http://localhost:4200/` to view the application.
 
-## How to run the application from source code
+### How to run the application from source code
 
-To run your Spring Boot application using the Maven Wrapper, you need to open a terminal/command prompt in the root directory of your project where the mvnw file is located. Then, run the following command:
-
-On Unix-based systems:
+1. Download or clone the repository to your local machine using the following command:
+`git clone https://github.com/imbacraft/exchangerates`
+2. Open the terminal or command prompt and navigate to the "backend" folder of the project.
+3. Run the following command to start the application:
 
 ```shell
 ./mvnw spring-boot:run
 ```
 
-On Windows:
-
-```shell
-mvnw spring-boot:run
-```
-
-This will download the required dependencies, compile your code, and start the Spring Boot application.
+This will download the required dependencies, compile your code, and start the Spring Boot application at `http://localhost:8080/`.
+4. Once the build is successful, navigate to the "target" folder inside the "backend" folder. You should see a file named "exchange-rates-app-1.0.0.jar".
+5. In a separate terminal or command prompt, navigate to the "frontend" folder of the project.
+6. Run the following command to install the required dependencies:
+`npm install`
+7. Once the installation is complete, run the following command to start the Angular development server:
+`ng serve`
+8. Open your web browser and go to `http://localhost:4200/` to view the application.
