@@ -14,7 +14,6 @@ public class ExchangeRateClientConfig {
     // this package must match the package in the <generatePackage> specified in
     // pom.xml
     marshaller.setContextPath("com.seb.exchangerates.model");
-    // marshaller.setPackagesToScan("com.seb.exchangerates.model");
     return marshaller;
   }
 

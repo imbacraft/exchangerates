@@ -13,9 +13,9 @@
 
     <groupId>com.seb</groupId>
     <artifactId>exchangerates</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>exchangerates</name>
-    <description>Spring Application which can display exchangerates</description>
+    <description>Spring Application which can display exchangerates by date</description>
 
     <properties>
         <java.version>11</java.version>

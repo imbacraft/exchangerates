@@ -13,23 +13,28 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ExchangeRateService {
+public class ExchangeRateByDateService {
 
   @Autowired private ExchangeRateByDateClient exchangeRateClient;
+  private static final Logger logger = LoggerFactory.getLogger(ExchangeRateByDateService.class);
 
-  public ExchangeRates deserializeExchangeRatesByDateResponse(String date) {
-
-    GetExchangeRatesByDateXmlStringResponse response =
-        exchangeRateClient.getExchangeRatesByDate(date);
+  private ExchangeRates deserializeExchangeRatesByDateResponse(
+      String date, GetExchangeRatesByDateXmlStringResponse response) {
 
     XmlMapper xmlMapper = new XmlMapper();
+
     String xmlData = response.getGetExchangeRatesByDateXmlStringResult();
 
     ExchangeRates rates = null;
+
+    logger.info(
+        "Attempting to deserialize (from XML) exchange rates by date response for date: {}", date);
 
     try {
       rates = xmlMapper.readValue(xmlData, ExchangeRates.class);
@@ -39,38 +44,37 @@ public class ExchangeRateService {
       e.printStackTrace();
     }
 
-    System.out.println(rates.getItems());
+    logger.info(
+        "Successfully deserialized (from XML) exchange rates by date response for date: {}", date);
 
     return rates;
   }
 
-  public ExchangeRates getPreviousDayExchangeRates(ExchangeRates rates) {
+  private ExchangeRates getExchangeRatesByDate(String date) {
 
-    LocalDate previousDay = rates.getItems().get(0).getDate().minusDays(1);
+    GetExchangeRatesByDateXmlStringResponse response =
+        exchangeRateClient.getExchangeRatesByDateResponse(date);
+
+    ExchangeRates ratesByDate = deserializeExchangeRatesByDateResponse(date, response);
+
+    return ratesByDate;
+  }
+
+  private ExchangeRates getPreviousDayExchangeRates(ExchangeRates nextDayRates) {
+
+    LocalDate previousDay = nextDayRates.getItems().get(0).getDate().minusDays(1);
     String previousDayString = previousDay.toString();
 
     GetExchangeRatesByDateXmlStringResponse response =
-        exchangeRateClient.getExchangeRatesByDate(previousDayString);
+        exchangeRateClient.getExchangeRatesByDateResponse(previousDayString);
 
-    XmlMapper xmlMapper = new XmlMapper();
-    String xmlData = response.getGetExchangeRatesByDateXmlStringResult();
-
-    ExchangeRates previousDayRates = null;
-
-    try {
-      previousDayRates = xmlMapper.readValue(xmlData, ExchangeRates.class);
-    } catch (JsonMappingException e) {
-      e.printStackTrace();
-    } catch (JsonProcessingException e) {
-      e.printStackTrace();
-    }
-
-    System.out.println(rates.getItems());
+    ExchangeRates previousDayRates =
+        deserializeExchangeRatesByDateResponse(previousDayString, response);
 
     return previousDayRates;
   }
 
-  public List<ExchangeRateDifference> getExchangeRateDifferences(
+  private List<ExchangeRateDifference> getExchangeRateDifferences(
       ExchangeRates ratesByDate, ExchangeRates ratesByPreviousDay) {
 
     List<ExchangeRateDifference> differencesList = new ArrayList<>();
@@ -101,14 +105,24 @@ public class ExchangeRateService {
       differencesList.add(exchangeRateDifference);
     }
 
-    // Sort list. Biggest rate increased first (descending order)
+    // Sort list. Biggest rate increase first (descending order)
     differencesList =
         differencesList.stream()
             .sorted(Comparator.comparing(ExchangeRateDifference::getDifference).reversed())
             .collect(Collectors.toList());
 
-    System.out.println(differencesList);
-
     return differencesList;
+  }
+
+  public List<ExchangeRateDifference> serveExchangeRateDifferences(String date) {
+
+    ExchangeRates rates = getExchangeRatesByDate(date);
+
+    ExchangeRates previousDayRates = getPreviousDayExchangeRates(rates);
+
+    List<ExchangeRateDifference> differenceList =
+        getExchangeRateDifferences(rates, previousDayRates);
+
+    return differenceList;
   }
 }

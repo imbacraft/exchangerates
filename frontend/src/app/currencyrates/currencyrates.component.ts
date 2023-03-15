@@ -22,7 +22,7 @@ export class CurrencyTableComponent {
 
         if (this.date == '' || this.dateError == true) return;
 
-        const url = `http://localhost:8080?date=${this.date}`;
+        const url = `http://localhost:8080/exchangerates?date=${this.date}`;
         this.http.get<any[]>(url).pipe(
             map(data => data.map(rate => ({
                 currency: rate.currency,

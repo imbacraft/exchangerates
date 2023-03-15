@@ -1,6 +1,6 @@
 package com.seb.exchangerates.constants;
 
-/** URL */
+/** Class containing URL constants */
 public class URL {
 
   public static final String EXCHANGE_RATES =
