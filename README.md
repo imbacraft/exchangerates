@@ -82,6 +82,10 @@ Exchangerates
         └── assets
 ```
 
+## Formatting
+
+The Project's source code has been formatted with [Google Java Format](https://github.com/google/google-java-format) to comply with [Google Java Style](https://google.github.io/styleguide/javaguide.html).
+
 ## Run the application
 
 The application can be run using either the packaged jar file or the source code.
@@ -89,33 +93,32 @@ The application can be run using either the packaged jar file or the source code
 ### How to run the application using packaged jar file
 
 1. Download or clone the repository to your local machine using the following command:
-`git clone https://github.com/imbacraft/exchangerates`
+   `git clone https://github.com/imbacraft/exchangerates`
 2. Open the terminal or command prompt and navigate to the "backend" folder of the project.
 3. Run the following command to build the application:
-`./mvnw clean install`
+   `./mvnw clean install`
 4. Once the build is successful, navigate to the "target" folder inside the "backend" folder. You should see a file named "exchange-rates-app-1.0.0.jar".
 5. Run the following command to start the application:
-`java -jar exchange-rates-app-1.0.0.jar`
+   `java -jar exchange-rates-app-1.0.0.jar`
 6. Spring boot backend should be running at `http://localhost:8080/`.
 7. In a separate terminal or command prompt, navigate to the "frontend" folder of the project.
 8. Run the following command to install the required dependencies:
-`npm install`
+   `npm install`
 9. Once the installation is complete, run the following command to start the Angular development server:
-`ng serve`
+   `ng serve`
 10. Open your web browser and go to `http://localhost:4200/` to view the application.
 
 ### How to run the application from source code
 
 1. Download or clone the repository to your local machine using the following command:
-`git clone https://github.com/imbacraft/exchangerates`
+   `git clone https://github.com/imbacraft/exchangerates`
 2. Open the terminal or command prompt and navigate to the "backend" folder of the project.
 3. Run the following command to start the application:
-`./mvnw spring-boot:run`
+   `./mvnw spring-boot:run`
 4. This will download the required dependencies, compile your code, and start the Spring Boot application at `http://localhost:8080/`.
-5. Once the build is successful, navigate to the "target" folder inside the "backend" folder. You should see a file named "exchange-rates-app-1.0.0.jar".
-6. In a separate terminal or command prompt, navigate to the "frontend" folder of the project.
-7. Run the following command to install the required dependencies:
-`npm install`
-8. Once the installation is complete, run the following command to start the Angular development server:
-`ng serve`
-9. Open your web browser and go to `http://localhost:4200/` to view the application.
+5. In a separate terminal or command prompt, navigate to the "frontend" folder of the project.
+6. Run the following command to install the required dependencies:
+   `npm install`
+7. Once the installation is complete, run the following command to start the Angular development server:
+   `ng serve`
+8. Open your web browser and go to `http://localhost:4200/` to view the application.
